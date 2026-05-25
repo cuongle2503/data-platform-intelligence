@@ -12,9 +12,9 @@ docker compose up -d
 Thứ tự tự động: `postgres` -> `minio` -> `elasticsearch` -> `neo4j` -> `redis` -> `airflow` -> `api`.
 
 ### Khởi động môi trường Development
-Sử dụng thêm file override để bật hot-reload và bind mount source code:
+Docker Compose tự động đọc `docker-compose.override.yml` để bật hot-reload và bind mount source code:
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+docker compose up -d
 ```
 
 ### Local Development (Không Docker cho API)
