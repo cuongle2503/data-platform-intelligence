@@ -31,6 +31,7 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_PROMETHEUS_AUTH_TYPE: "public"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 10s
@@ -220,6 +221,9 @@ services:
       DUCKDB_S3_SECRET_KEY: ${DUCKDB_S3_SECRET_KEY}
       DUCKDB_S3_USE_SSL: ${DUCKDB_S3_USE_SSL}
       DUCKDB_S3_URL_STYLE: ${DUCKDB_S3_URL_STYLE}
+      AIRFLOW__METRICS__STATSD_ON: "True"
+      AIRFLOW__METRICS__STATSD_HOST: statsd-exporter
+      AIRFLOW__METRICS__STATSD_PORT: 9125
     volumes:
       - ./orchestration/airflow/dags:/opt/airflow/dags:ro
       - ./idp:/opt/airflow/idp:ro
@@ -331,7 +335,67 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./infra/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/monitoring/grafana/provisioning/dashboards/json:/etc/grafana/provisioning/dashboards/json:ro
     depends_on:
       - prometheus
     networks:
       - idp-backend
+
+  # -------------------------------------------------------------------
+  # Exporters & Monitoring Tools
+  # -------------------------------------------------------------------
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    ports:
+      - "8081:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - idp-backend
+
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    environment:
+      - REDIS_ADDR=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - idp-backend
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    environment:
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+    depends_on:
+      - postgres
+    networks:
+      - idp-backend
+
+  elasticsearch-exporter:
+    image: quay.io/prometheuscommunity/elasticsearch-exporter:latest
+    command:
+      - '--es.uri=http://elasticsearch:9200'
+      - '--es.ssl-skip-verify'
+      - '--es.timeout=30s'
+    environment:
+      - ES_USERNAME=elastic
+      - ES_PASSWORD=${ES_PASSWORD:-changeme}
+    depends_on:
+      - elasticsearch
+    networks:
+      - idp-backend
+
+  statsd-exporter:
+    image: prom/statsd-exporter:latest
+    ports:
+      - "9125:9125/udp"
+      - "9102:9102"
+    networks:
+      - idp-backend
+

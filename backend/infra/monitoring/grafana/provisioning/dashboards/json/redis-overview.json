@@ -1,0 +1,12 @@
+{
+  "title": "Redis Overview",
+  "uid": "redis-overview",
+  "schemaVersion": 39,
+  "refresh": "10s",
+  "panels": [
+    {"title": "Memory Usage", "type": "timeseries", "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8}, "fieldConfig": {"defaults": {"unit": "bytes"}}, "targets": [{"expr": "redis_memory_used_bytes", "legendFormat": "used"}]},
+    {"title": "Commands per Second", "type": "timeseries", "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8}, "targets": [{"expr": "rate(redis_commands_processed_total[2m])", "legendFormat": "ops"}]},
+    {"title": "Connected Clients", "type": "timeseries", "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8}, "targets": [{"expr": "redis_connected_clients"}]},
+    {"title": "Keys Count", "type": "timeseries", "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8}, "targets": [{"expr": "redis_db_keys", "legendFormat": "{{db}}"}]}
+  ]
+}

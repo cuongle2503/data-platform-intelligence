@@ -1,0 +1,17 @@
+{
+  "title": "Airflow Overview (StatsD)",
+  "uid": "airflow-overview",
+  "schemaVersion": 39,
+  "refresh": "10s",
+  "panels": [
+    {"title": "Executor Task State", "type": "timeseries", "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8}, "targets": [
+      {"expr": "airflow_executor_running_tasks", "legendFormat": "running"},
+      {"expr": "airflow_executor_queued_tasks", "legendFormat": "queued"}
+    ]},
+    {"title": "DAG Success Count", "type": "timeseries", "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8}, "targets": [
+      {"expr": "increase(airflow_dagrun_duration_success_count[5m])", "legendFormat": "success (last 5m)"}
+    ]},
+    {"title": "Import Errors", "type": "stat", "gridPos": {"x": 0, "y": 8, "w": 6, "h": 4}, "targets": [{"expr": "airflow_dag_processing_import_errors"}]},
+    {"title": "Scheduler Heartbeat", "type": "timeseries", "gridPos": {"x": 6, "y": 8, "w": 18, "h": 4}, "targets": [{"expr": "airflow_scheduler_heartbeat"}]}
+  ]
+}

@@ -11,12 +11,6 @@ docker compose up -d
 ```
 Thứ tự tự động: `postgres` -> `minio` -> `elasticsearch` -> `neo4j` -> `redis` -> `airflow` -> `api`.
 
-### Khởi động môi trường Development
-Docker Compose tự động đọc `docker-compose.override.yml` để bật hot-reload và bind mount source code:
-```bash
-docker compose up -d
-```
-
 ### Local Development (Không Docker cho API)
 Cài đặt môi trường và dependencies:
 ```bash

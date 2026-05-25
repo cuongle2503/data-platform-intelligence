@@ -14,7 +14,10 @@ logger = get_logger(__name__)
 
 class ElasticIndexer:
     def __init__(self):
-        self.es = AsyncElasticsearch(settings.es_host)
+        self.es = AsyncElasticsearch(
+            settings.es_host,
+            basic_auth=(settings.es_user, settings.es_password),
+        )
 
     async def close(self):
         await self.es.close()

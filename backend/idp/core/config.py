@@ -47,6 +47,7 @@ class Settings(BaseSettings):
     airflow_db_conn: str = Field(validation_alias="AIRFLOW__DATABASE__SQL_ALCHEMY_CONN")
     airflow_fernet_key: str = Field(validation_alias="AIRFLOW__CORE__FERNET_KEY")
     airflow_api_secret_key: str = Field(
+        default="temporary-secret-key",
         validation_alias="AIRFLOW_WEBSERVER_SECRET_KEY"
     )
 

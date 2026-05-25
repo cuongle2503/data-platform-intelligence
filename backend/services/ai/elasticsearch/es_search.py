@@ -6,7 +6,10 @@ from services.shared.config import settings
 
 class ElasticSearcher:
     def __init__(self):
-        self.client = httpx.AsyncClient(base_url=settings.es_host)
+        self.client = httpx.AsyncClient(
+            base_url=settings.es_host,
+            auth=(settings.es_user, settings.es_password),
+        )
 
     async def close(self):
         await self.client.aclose()

@@ -29,11 +29,13 @@ class Settings(BaseSettings):
 
     # -- Neo4j --
     neo4j_uri: str = Field(default="bolt://localhost:7687", validation_alias="NEO4J_URI")
-    neo4j_user: str = Field(validation_alias="NEO4J_USER")
-    neo4j_password: str = Field(validation_alias="NEO4J_PASSWORD")
+    neo4j_user: str = Field(default="neo4j", validation_alias="NEO4J_USER")
+    neo4j_password: str = Field(default="neo4j123", validation_alias="NEO4J_PASSWORD")
 
     # -- Elasticsearch --
     es_host: str = Field(default="http://localhost:9200", validation_alias="ES_HOST")
+    es_user: str = Field(default="elastic", validation_alias="ES_USER")
+    es_password: str = Field(default="changeme", validation_alias="ES_PASSWORD")
 
     # -- Redis & Celery --
     redis_url: str = Field(default="redis://localhost:6379/0", validation_alias="REDIS_URL")
