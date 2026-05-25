@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     # -- General --
     environment: str = Field(default="development", validation_alias="ENVIRONMENT")
-    allowed_origins: str = Field(default="http://localhost:3000,http://127.0.0.1:3000", validation_alias="ALLOWED_ORIGINS")
+    allowed_origins: str = Field(default="http://localhost,http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000", validation_alias="ALLOWED_ORIGINS")
 
     # -- PostgreSQL --
     postgres_host: str = Field(default="127.0.0.1", validation_alias="POSTGRES_HOST")

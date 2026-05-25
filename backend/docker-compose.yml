@@ -279,6 +279,28 @@ services:
           memory: 512M
 
   # -------------------------------------------------------------------
+  # Next.js Frontend
+  # -------------------------------------------------------------------
+  frontend:
+    build:
+      context: ../fontend
+      dockerfile: Dockerfile
+    image: idp-frontend:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost
+    depends_on:
+      - api
+    networks:
+      - idp-backend
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+
+  # -------------------------------------------------------------------
   # Nginx Reverse Proxy
   # -------------------------------------------------------------------
   nginx:
@@ -290,6 +312,7 @@ services:
     depends_on:
       - api
       - airflow
+      - frontend
     networks:
       - idp-backend
     deploy:
