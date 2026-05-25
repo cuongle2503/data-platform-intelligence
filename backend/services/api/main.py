@@ -29,7 +29,8 @@ async def lifespan(app: FastAPI):
     try:
         await DatabasePool.connect()
     except Exception as e:
-        logger.error("Failed to connect to database", error=str(e))
+        logger.critical("Failed to connect to database. Failing fast.", error=str(e))
+        raise RuntimeError(f"Database connection failed: {e}")
 
     yield
 

@@ -28,17 +28,17 @@ BEGIN
 
     -- API Service
     IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'api_service') THEN
-        CREATE ROLE api_service LOGIN PASSWORD 'CHANGE_ME_IN_PROD';
+        CREATE ROLE api_service LOGIN PASSWORD 'api_service_pass';
     END IF;
 
     -- Airflow Role
     IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'airflow_role') THEN
-        CREATE ROLE airflow_role LOGIN PASSWORD 'CHANGE_ME_IN_PROD';
+        CREATE ROLE airflow_role LOGIN PASSWORD 'airflow_role_pass';
     END IF;
 
     -- Transform Role
     IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'transform_role') THEN
-        CREATE ROLE transform_role LOGIN PASSWORD 'CHANGE_ME_IN_PROD';
+        CREATE ROLE transform_role LOGIN PASSWORD 'transform_role_pass';
     END IF;
 END
 $$;

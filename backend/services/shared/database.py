@@ -15,12 +15,16 @@ class DatabasePool:
     async def connect(cls) -> None:
         if cls._pool is None:
             logger.info("Initializing asyncpg connection pool")
-            cls._pool = await asyncpg.create_pool(
-                dsn=settings.database_url,
-                min_size=1,
-                max_size=10,
-                command_timeout=60.0
-            )
+            try:
+                cls._pool = await asyncpg.create_pool(
+                    dsn=settings.database_url,
+                    min_size=1,
+                    max_size=10,
+                    command_timeout=60.0
+                )
+            except Exception as e:
+                logger.critical("Database connection failed", error=str(e))
+                raise e
 
     @classmethod
     async def disconnect(cls) -> None:

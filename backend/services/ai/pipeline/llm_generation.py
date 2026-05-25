@@ -13,12 +13,24 @@ logger = get_logger(__name__)
 
 class LlmGenerator:
     def __init__(self):
-        if not settings.gemini_api_key:
-            raise ValueError("GEMINI_API_KEY is not set")
-        self.client = genai.Client(api_key=settings.gemini_api_key)
+        self._client = None
+
+    @property
+    def client(self):
+        if self._client is None:
+            if not settings.gemini_api_key:
+                logger.error("GEMINI_API_KEY is not set. LLM features will be disabled.")
+                raise ValueError("GEMINI_API_KEY is not set")
+            self._client = genai.Client(api_key=settings.gemini_api_key)
+        return self._client
 
     async def generate_stream(self, context: str, user_query: str, model: str = "gemini-2.0-flash") -> AsyncGenerator[str, None]:
         """Generate streaming response using Gemini with retry for missing citations."""
+        try:
+            client = self.client
+        except ValueError as e:
+            yield f"\n[Lỗi cấu hình: {str(e)}]"
+            return
 
         prompt_path = settings.project_root / "services" / "ai" / "prompts" / "system_prompt.txt"
         system_instruction = prompt_path.read_text(encoding="utf-8")
@@ -38,7 +50,7 @@ class LlmGenerator:
                 logger.warning("Retrying LLM generation due to missing citations", attempt=attempt)
 
             try:
-                response = self.client.models.generate_content(
+                response = client.models.generate_content(
                     model=model,
                     contents=prompt,
                     config=types.GenerateContentConfig(

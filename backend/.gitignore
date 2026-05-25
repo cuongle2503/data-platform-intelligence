@@ -8,6 +8,8 @@ tmp/
 target/
 logs/
 *.parquet
+backups/
+*.duckdb
 
 # Python
 __pycache__/
@@ -17,6 +19,9 @@ __pycache__/
 venv/
 .pytest_cache/
 *.egg-info/
+
+# Playwright / Browser test artifacts
+.playwright-mcp/
 
 # Editor
 .vscode/

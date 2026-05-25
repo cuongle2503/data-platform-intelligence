@@ -18,10 +18,34 @@ class GraphAugmentedRAG:
     """Orchestrates the 14-step Graph-Augmented RAG Pipeline."""
 
     def __init__(self):
-        self.es_searcher = ElasticSearcher()
-        self.vector_searcher = VectorSearcher()
-        self.graph_traversal = GraphTraversal()
-        self.llm = LlmGenerator()
+        self._es_searcher = None
+        self._vector_searcher = None
+        self._graph_traversal = None
+        self._llm = None
+
+    @property
+    def es_searcher(self):
+        if self._es_searcher is None:
+            self._es_searcher = ElasticSearcher()
+        return self._es_searcher
+
+    @property
+    def vector_searcher(self):
+        if self._vector_searcher is None:
+            self._vector_searcher = VectorSearcher()
+        return self._vector_searcher
+
+    @property
+    def graph_traversal(self):
+        if self._graph_traversal is None:
+            self._graph_traversal = GraphTraversal()
+        return self._graph_traversal
+
+    @property
+    def llm(self):
+        if self._llm is None:
+            self._llm = LlmGenerator()
+        return self._llm
 
     async def process_query_stream(self, user_query: str) -> AsyncGenerator[str, None]:
         """Execute pipeline and stream results."""
@@ -122,8 +146,10 @@ class GraphAugmentedRAG:
             yield chunk
 
     async def close(self):
-        await self.es_searcher.close()
-        self.graph_traversal.close()
+        if self._es_searcher:
+            await self._es_searcher.close()
+        if self._graph_traversal:
+            self._graph_traversal.close()
 
 # Singleton instance
 rag_pipeline = GraphAugmentedRAG()

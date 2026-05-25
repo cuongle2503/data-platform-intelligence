@@ -4,17 +4,38 @@ Hệ thống Intelligent Data Platform (IDP) được vận hành dựa trên ki
 
 ## 1. Startup & Shutdown
 
-### Khởi động toàn bộ hệ thống
+### Khởi động môi trường Production
+Sử dụng docker-compose mặc định (không mount code, không reload):
 ```bash
 docker compose up -d
 ```
-Thứ tự tự động: `postgres` -> `minio` -> `elasticsearch` -> `neo4j` -> `redis` -> `airflow`.
+Thứ tự tự động: `postgres` -> `minio` -> `elasticsearch` -> `neo4j` -> `redis` -> `airflow` -> `api`.
 
-### FastAPI Server (Development)
+### Khởi động môi trường Development
+Sử dụng thêm file override để bật hot-reload và bind mount source code:
 ```bash
-export PYTHONPATH=$PYTHONPATH:.
-python3 -m uvicorn services.api.main:app --host 0.0.0.0 --port 8000
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
+
+### Local Development (Không Docker cho API)
+Cài đặt môi trường và dependencies:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+Chạy FastAPI:
+```bash
+uvicorn services.api.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+## 2. Testing
+Test suite yêu cầu cài đặt package local và dependencies.
+```bash
+pip install -e .
+pytest -q
+```
+*Lưu ý: API health và metrics endpoints được thiết kế fail-fast. Database phải kết nối được thì ứng dụng mới khởi động. AI features (Gemini/Neo4j) được khởi tạo lazy, nên test `/health` sẽ không fail nếu thiếu API key.*
 
 ## 2. Health & Monitoring
 
