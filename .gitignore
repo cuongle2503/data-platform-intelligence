@@ -1,0 +1,80 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+*.egg
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.venv/
+venv/
+env/
+
+# Logs and local tool state
+*.log
+.playwright-mcp/
+
+# dbt
+**/transform/dbt/target/
+**/transform/dbt/dbt_packages/
+**/transform/dbt/logs/
+**/transform/dbt/.user.yml
+
+# Local databases and generated indexes
+*.db
+*.db.wal
+*.duckdb
+*.duckdb.wal
+*.sqlite
+*.sqlite3
+*.gpickle
+
+# Airflow
+**/orchestration/airflow/logs/
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups and dumps
+backups/
+*.dump
+*.bak
+*.backup
+
+# Data (never commit raw/generated data)
+*.parquet
+*.csv
+!**/transform/dbt/seeds/*.csv
+!**/ingestion/connectors/**/*.csv
+
+# Generated runtime output
+tmp/

@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: dim_countries
+    description: Country dimension with code, name, region, income group
+    columns:
+      - name: country_key
+        description: Surrogate primary key
+        tests:
+          - not_null
+          - unique
+      - name: country_code
+        description: ISO 3-letter code (natural key)
+        tests:
+          - not_null
+          - unique
+      - name: is_asean
+        description: ASEAN member flag
+        tests:
+          - accepted_values:
+              values: [true, false]
+      - name: is_primary
+        description: Primary focus country flag
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+  - name: dim_indicators
+    description: Economic indicator dimension
+    columns:
+      - name: indicator_key
+        description: Surrogate primary key
+        tests:
+          - not_null
+          - unique
+      - name: indicator_code
+        description: Original source indicator code
+        tests:
+          - not_null
+      - name: category
+        description: Indicator category
+        tests:
+          - accepted_values:
+              values: [gdp, prices, trade, rates, labor, investment, structure, technology]
+      - name: frequency
+        description: Data frequency
+        tests:
+          - accepted_values:
+              values: [annual, quarterly, monthly, daily, sparse]
+
+  - name: dim_dates
+    description: Date dimension (1950-2030)
+    columns:
+      - name: date_key
+        description: Date key in YYYYMMDD format
+        tests:
+          - not_null
+          - unique
+      - name: full_date
+        description: Actual date
+        tests:
+          - not_null
+          - unique
+
+  - name: fact_economic_indicators
+    description: Central fact table for economic indicators (star schema)
+    columns:
+      - name: indicator_key
+        description: FK to dim_indicators
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_indicators')
+              field: indicator_key
+      - name: country_key
+        description: FK to dim_countries
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_countries')
+              field: country_key
+      - name: date_key
+        description: FK to dim_dates
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: value
+        description: Indicator value
+        tests:
+          - not_null

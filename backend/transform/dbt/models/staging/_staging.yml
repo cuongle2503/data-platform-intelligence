@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: stg_world_bank__indicators
+    description: Cleaned World Bank economic indicators with NULLs removed and duplicates resolved
+    columns:
+      - name: country_code
+        description: ISO 3-letter country code
+        tests:
+          - not_null
+      - name: country_name
+        description: Full country name
+      - name: indicator_code
+        description: World Bank indicator ID
+        tests:
+          - not_null
+      - name: indicator_name
+        description: Human-readable indicator name
+      - name: year
+        description: Observation year
+        tests:
+          - not_null
+      - name: value
+        description: Indicator value
+        tests:
+          - not_null
+      - name: ingested_at
+        description: When this row was ingested (UTC)
+
+  - name: stg_world_bank__docs_metadata
+    description: Cleaned World Bank document metadata
+    columns:
+      - name: doc_id
+        description: Unique document identifier
+        tests:
+          - not_null
+          - unique
+      - name: title
+        description: Document title
+      - name: pdf_url
+        description: PDF download URL
+
+  - name: stg_world_bank__docs_chunks
+    description: Cleaned World Bank document text chunks
+    columns:
+      - name: chunk_id
+        description: MD5 hash of doc_id + index + text
+        tests:
+          - not_null
+          - unique
+      - name: doc_id
+        description: Parent document identifier
+        tests:
+          - not_null
+      - name: text
+        description: Chunk text (~1500 chars)
+        tests:
+          - not_null

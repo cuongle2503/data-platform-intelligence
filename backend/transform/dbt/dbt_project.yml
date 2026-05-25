@@ -1,0 +1,21 @@
+name: idp_transform
+version: "1.0"
+profile: idp_duckdb
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+seeds:
+  idp_transform:
+    +schema: seeds
+
+models:
+  idp_transform:
+    staging:
+      +materialized: view
+      +schema: silver
+    marts:
+      +materialized: table
+      +schema: gold

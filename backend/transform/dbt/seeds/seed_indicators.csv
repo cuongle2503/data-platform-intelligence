@@ -1,0 +1,33 @@
+indicator_code,indicator_name,category,unit,frequency,description
+NY.GDP.MKTP.CD,GDP (current USD),gdp,USD,annual,Gross Domestic Product at current prices in US dollars
+NY.GDP.MKTP.KD.ZG,GDP growth (annual %),gdp,%,annual,Annual percentage growth rate of GDP at market prices
+NY.GDP.PCAP.CD,GDP per capita (current USD),gdp,USD,annual,GDP per capita at current prices in US dollars
+NY.GNP.PCAP.CD,GNI per capita (current USD),gdp,USD,annual,Gross National Income per capita at current prices
+FP.CPI.TOTL.ZG,Inflation CPI (annual %),prices,%,annual,Consumer price index - annual percentage change
+FP.CPI.TOTL,Consumer Price Index (2010=100),prices,Index,annual,Consumer price index reflects changes in cost to average consumer
+SL.UEM.TOTL.ZS,Unemployment rate (%),labor,%,annual,Unemployment as percentage of total labor force
+SL.TLF.TOTL.IN,Labor force total,labor,People,annual,Total labor force
+BX.KLT.DINV.WD.GD.ZS,Foreign direct investment (% of GDP),investment,%,annual,Net inflows of foreign direct investment as % of GDP
+NE.EXP.GNFS.ZS,Exports (% of GDP),trade,%,annual,Exports of goods and services as percentage of GDP
+NE.IMP.GNFS.ZS,Imports (% of GDP),trade,%,annual,Imports of goods and services as percentage of GDP
+BN.CAB.XOKA.GD.ZS,Current account balance (% of GDP),trade,%,annual,Current account balance as percentage of GDP
+GC.DOD.TOTL.GD.ZS,Government debt (% of GDP),rates,%,annual,Central government debt as percentage of GDP
+FI.RES.TOTL.CD,Total reserves (current USD),rates,USD,annual,Total reserves including gold at current USD
+PA.NUS.FCRF,Official exchange rate (LCU per USD),rates,LCU,annual,Official exchange rate in local currency units per USD
+SP.POP.TOTL,Population total,structure,People,annual,Total population
+SP.POP.GROW,Population growth (annual %),structure,%,annual,Annual population growth rate
+SI.POV.GINI,GINI index,structure,Index,sparse,Gini index measures income inequality (0=perfect equality 100=perfect inequality)
+SE.PRM.ENRR,Primary school enrollment (%),structure,%,sparse,Gross primary school enrollment ratio
+IT.NET.USER.ZS,Internet users (% of population),technology,%,annual,Percentage of population using the internet
+EG.USE.ELEC.KH.PC,Electric power consumption (kWh per capita),technology,kWh,annual,Electric power consumption per capita
+EN.ATM.CO2E.KT,CO2 emissions (kt),technology,kt,annual,Carbon dioxide emissions in kilotons
+NV.AGR.TOTL.ZS,Agriculture value added (% of GDP),structure,%,annual,Agriculture as percentage of GDP
+NV.IND.TOTL.ZS,Industry value added (% of GDP),structure,%,annual,Industry as percentage of GDP
+NV.SRV.TOTL.ZS,Services value added (% of GDP),structure,%,annual,Services as percentage of GDP
+LP.LPI.OVRL.XQ,Logistics Performance Index,structure,Index,sparse,Logistics Performance Index overall score (1=low to 5=high)
+TM.TAX.MRCH.SM.AR,Tariff rate (%),trade,%,sparse,Most Favored Nation simple mean tariff rate
+IT.CEL.SETS.P2,Mobile cellular subscriptions (per 100 people),technology,per 100,annual,Mobile cellular subscriptions per 100 people
+IT.NET.BBND.P2,Fixed broadband subscriptions (per 100 people),technology,per 100,annual,Fixed broadband subscriptions per 100 people
+GB.XPD.RSDV.GD.ZS,R&D expenditure (% of GDP),technology,%,sparse,Research and development expenditure as percentage of GDP
+SL.TLF.CACT.FE.ZS,Female labor force participation (%),labor,%,annual,Female labor force participation rate
+ST.INT.RCPT.CD,International tourism receipts (current USD),trade,USD,sparse,International inbound tourism receipts in current USD

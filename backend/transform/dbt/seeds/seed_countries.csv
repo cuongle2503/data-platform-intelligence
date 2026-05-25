@@ -1,0 +1,11 @@
+country_code,country_name,region,income_group,is_asean,is_primary
+VNM,Vietnam,East Asia & Pacific,Lower-middle income,true,true
+THA,Thailand,East Asia & Pacific,Upper-middle income,true,false
+IDN,Indonesia,East Asia & Pacific,Upper-middle income,true,false
+PHL,Philippines,East Asia & Pacific,Lower-middle income,true,false
+MYS,Malaysia,East Asia & Pacific,Upper-middle income,true,false
+SGP,Singapore,East Asia & Pacific,High income,true,false
+CHN,China,East Asia & Pacific,Upper-middle income,false,false
+USA,United States,North America,High income,false,false
+JPN,Japan,East Asia & Pacific,High income,false,false
+KOR,Korea Rep.,East Asia & Pacific,High income,false,false

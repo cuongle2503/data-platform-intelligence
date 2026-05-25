@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'idp-api'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['10.88.0.9:8000']
+
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432'] # Requires exporter, but we'll stick to API for now
+
+  - job_name: 'minio'
+    metrics_path: '/minio/v2/metrics/cluster'
+    static_configs:
+      - targets: ['minio:9000']

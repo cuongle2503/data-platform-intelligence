@@ -1,0 +1,14 @@
+idp_duckdb:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: /opt/airflow/tmp/duckdb/idp.db
+      extensions:
+        - httpfs
+      settings:
+        s3_endpoint: "{{ env_var('DUCKDB_S3_ENDPOINT', 'minio:9000') }}"
+        s3_access_key_id: "{{ env_var('DUCKDB_S3_ACCESS_KEY', 'minio_admin') }}"
+        s3_secret_access_key: "{{ env_var('DUCKDB_S3_SECRET_KEY', 'CHANGE_ME_minio_admin_secret') }}"
+        s3_use_ssl: "{{ env_var('DUCKDB_S3_USE_SSL', 'false') }}"
+        s3_url_style: "{{ env_var('DUCKDB_S3_URL_STYLE', 'path') }}"
