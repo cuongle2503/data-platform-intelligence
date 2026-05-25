@@ -1,77 +1,91 @@
-# Intelligent Data Platform (IDP)
+# 🚀 Intelligent Data Platform (IDP)
 
-Data platform for economic indicators — ingestion, transformation, serving, and AI-powered querying.
+Data platform for economic indicators — ingestion, transformation, serving, and **Graph-Augmented RAG** AI querying.
 
-> **Status: Design / Blueprint.** Implementation pending. All architecture docs are in `backend/docs/`.
+> **Status: Implemented & Monitoring Active.** Fully functional medallion architecture with real-time observability.
 
-## Quick Start
+## 🏗️ Architecture Overview
 
+```text
+Data Sources ➔ Ingestion (Python) ➔ Bronze (MinIO/Parquet) ➔ Silver (DuckDB+dbt) ➔ Gold (Postgres+pgvector) ➔ API (FastAPI) ➔ AI (Graph RAG)
+                                                                                               ▲
+                                                                                     Airflow Orchestrates
+```
+
+### 🛠️ The Tech Stack
+| Layer | Technology | Role |
+| :--- | :--- | :--- |
+| **Ingestion** | Python, `wbgapi`, Pandas | World Bank API connectors |
+| **Storage** | MinIO (S3-compatible) | Bronze layer (raw parquet files) |
+| **Transform** | DuckDB + dbt-core | Silver layer processing |
+| **Serving** | PostgreSQL 16 + `pgvector` | Gold layer (Star Schema) & Vector Store |
+| **Intelligence** | Neo4j + Elasticsearch + Gemini | Graph-Augmented RAG Pipeline |
+| **Orchestration** | Apache Airflow | Pipeline scheduling & dependency management |
+| **Observability** | Prometheus + Grafana + cAdvisor | Full-stack metrics & container monitoring |
+
+---
+
+## ⚡ Quick Start
+
+### 1. Requirements
+- Docker & Docker Compose
+- Python 3.10+
+- Gemini API Key
+
+### 2. Startup
 ```bash
+# Clone and enter
 git clone <repo-url>
 cd data-platform-intelligent
 
-# Read the architecture
-cat backend/docs/high-level-architecture.md
+# Setup environment
+cp .env.example .env  # Add your GEMINI_API_KEY
 
-# Start from Phase 0
-cat backend/docs/todos.md
+# Launch everything
+docker compose --env-file .env up -d
 ```
 
-## Architecture Overview
+### 3. Access
+- **API**: `http://localhost:8001/docs`
+- **Airflow**: `http://localhost:8080` (admin/admin123)
+- **Grafana**: `http://localhost:3000` (admin/admin123)
+- **MinIO Console**: `http://localhost:9001`
+- **Neo4j Bloom**: `http://localhost:7474`
 
-```
-Data Sources → Ingestion (Python) → Bronze (MinIO/Parquet) → Silver (DuckDB+dbt) → Gold (PostgreSQL+pgvector) → API (FastAPI) → AI (Graph-Augmented RAG)
-                                                                                              ↑
-                                                                                    Airflow 3.0 orchestrates
-```
+---
 
-**5-layer Lean Data Stack:**
+## 📊 Monitoring & Observability
 
-| Layer | Technology | Phase |
-|---|---|---|
-| 1. Ingestion | Python (requests, pandas, wbgapi) | 2 |
-| 2. Transformation | DuckDB + dbt-core | 3 |
-| 3. Serving | PostgreSQL 16 + pgvector | 3/5 |
-| 4. Intelligence | Graph-Augmented RAG (Neo4j + Elasticsearch + Gemini) | 5 |
-| 5. Orchestration | Apache Airflow 3.0 | 4 |
+IDP is equipped with a comprehensive monitoring stack. Visit **Grafana** to view:
+- **IDP Containers**: Real-time RAM/CPU/IO for all 10+ services via cAdvisor.
+- **Airflow Stats**: DAG success rates, task latencies, and worker health.
+- **Service Overviews**: Dedicated dashboards for Postgres, Redis, and Elasticsearch.
 
-**Infrastructure:** Docker Compose on Ubuntu 22.04 (16GB RAM / 512GB SSD).
+---
 
-## Documentation
+## 🤖 AI Intelligence (Graph RAG)
 
-All design docs live in [`backend/docs/`](backend/docs/):
+Our chatbot doesn't just search text; it understands relationships:
+1. **Lexical Search**: Elasticsearch finds exact indicator codes/names.
+2. **Vector Search**: `pgvector` retrieves semantic context from documents.
+3. **Graph Traversal**: Neo4j explores connections between countries, indicators, and topics.
+4. **Synthesis**: Google Gemini 1.5 Pro generates insights based on the combined context.
 
-| Document | Description |
-|---|---|
-| [high-level-architecture.md](backend/docs/high-level-architecture.md) | 5-layer model, design decisions, cost estimate |
-| [technology-stack.md](backend/docs/technology-stack.md) | Full tech stack per layer, activation guide |
-| [data-model.md](backend/docs/data-model.md) | Bronze/Silver/Gold schemas, star schema, ERD |
-| [chatbot-architecture.md](backend/docs/chatbot-architecture.md) | 14-step Graph-Augmented RAG pipeline |
-| [environment-config.md](backend/docs/environment-config.md) | Docker Compose, env vars, resource limits |
-| [source-catalog.md](backend/docs/source-catalog.md) | Data sources, indicators, API docs |
-| [ingestion-manual-runbook.md](backend/docs/ingestion-manual-runbook.md) | Manual connector runbook |
-| [repo-structure.md](backend/docs/repo-structure.md) | Directory layout (current + target) |
-| [todos.md](backend/docs/todos.md) | Master task list across all phases |
-| [api-design.md](backend/docs/api-design.md) | API endpoints, request/response schemas |
-| [phases/](backend/docs/phases/) | Per-phase implementation checklists |
+---
 
-## Phases
+## 📁 Repository Structure
+- `backend/idp/`: Core data engineering code (ingestion, transformation).
+- `backend/services/`: API and AI RAG implementation.
+- `backend/orchestration/`: Airflow DAG definitions.
+- `backend/infra/`: Docker, Nginx, and Monitoring configuration.
+- `backend/transform/dbt/`: dbt models and schema definitions.
 
-| Phase | Content | Duration | Status |
-|---|---|---|---|
-| 0 | Docs Finalization | Done | ✅ |
-| 1 | Bootstrap Storage (MinIO) | 1.5–2 days | Pending |
-| 2 | Ingestion (World Bank connectors) | ~3 days | Pending |
-| 3 | Transformation (DuckDB + dbt) | ~11-13 days | Pending |
-| 4 | Orchestration (Airflow) | ~5-6 days | Pending |
-| 5 | Serving & Intelligence (API + RAG) | ~16-20 days | Pending |
-| 6 | Hardening | ~5-6 days | Pending |
-| **Total Lean** | | **~42-52 days** | |
+---
 
-## Principles
+## 🛡️ Security & Hardening
+- **RBAC**: Proper database roles (`api_service`, `airflow_role`, `transform_role`).
+- **Secret Management**: Environment-driven configuration via Pydantic Settings.
+- **Internal Network**: All backend services communicate via isolated Docker bridge.
 
-- **Basic first, modern later** — get end-to-end working, optimize after
-- **Lean stack** — fewest tools possible, each must justify its value
-- **Open-source first** — no vendor lock-in, no license fees
-- **Single-node first** — max out 16GB/512GB before scaling to cloud
-- **Docs-first** — design decisions locked in docs before code
+---
+🤖 Generated & Maintained with [Claude Code](https://claude.com/code)
